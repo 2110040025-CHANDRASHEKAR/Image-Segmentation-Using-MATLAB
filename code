@@ -1,0 +1,39 @@
+close all;
+clear all;
+clc
+%Gray level Thresolding
+a=imread('b.jpg');
+level=graythresh(a);
+c= im2bw(a,level);
+subplot(1,2,1), imshow(a),title('original image');
+subplot(1,2,2), imshow(c),title('threshold image');
+%edge detection
+a=imread('jump.jpg');
+a=rgb2gray(a);
+c=edge(a,'roberts');
+d=edge(a,'sobel');
+e=edge(a,'prewitt');
+f=edge(a,'canny');
+g=edge(a,'log');
+subplot(2,3,1), imshow(a),title('original image');
+subplot(2,3,2), imshow(c),title('roberta image');
+subplot(2,3,3), imshow(d),title('sobel image');
+subplot(2,3,4), imshow(e),title('prewitt image');
+subplot(2,3,5), imshow(f),title('canny image');
+subplot(2,3,6), imshow(g),title('log image');
+%descrete wavelet tranform (wavelet decompsition)
+a=imread('jump.jpg');
+subplot(2,2,1), imshow(a),title('original image');
+[LL LH HL HH]=dwt2(im2double(a),'haar');
+subplot(2,2,2), imshow([LL LH ; HL HH],[]),title('Wavelet Decomposition');
+[LL1 LH1 HL1 HH1]=dwt2(im2double(LL),'haar');
+c=[LL1 LH1 ; HL1 HH1];
+subplot(2,2,3), imshow([c LH ; HL HH],[]),title('2nd level Wavelet Decomposition');
+%Morphological processing
+a=imread('jump1.jpg');
+subplot(2,2,1), imshow(a),title('original image');
+s=strel('line',3,3);
+dilated=imdilate(a,s);
+subplot(222), imshow(dilated);
+eroded=imerode(a,s);
+subplot(223), imshow(eroded);
